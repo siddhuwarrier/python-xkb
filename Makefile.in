@@ -1,0 +1,47 @@
+##@brief Makefile for python-xkb
+# @author Siddhu Warrier (siddhuwarrier@gmail.com)
+# @date 01/02/2010
+
+#constants
+DOXYGEN_BINARY = @DOXYGEN_BINARY@
+DOXYGEN_FAILED = 2
+DOXYGEN_FILE = Doxyfile
+PYTHON=@PYTHON@
+PREFIX=@prefix@
+BUILD = build/
+DOXYGEN_DIR = doxygen-docs/
+
+PY_FLAGS = @PREFIX_FLAG@ @DEBIAN_FLAG@
+PY_PKG_DIR = @PY_PKG_DIR@
+#builds code in same directory.
+build: doxygen build-docs
+	echo "###############################"
+	echo "building..."
+	$(PYTHON) setup.py build
+	
+#install to prefix specified
+install: doxygen build-docs
+	echo "###############################"
+	echo "installing..."
+	$(PYTHON) setup.py install $(PY_FLAGS)
+
+#build doxygen documentation.
+doxygen:
+	echo "###############################"
+	${DOXYGEN_BINARY} ${DOXYGEN_FILE} 1>/dev/null;\
+
+#build pdf from doxygen-generated tex file.
+build-docs:
+	echo "###############################"
+	cd ${DOXYGEN_DIR}/latex; make 1>/dev/null
+
+clean:
+	rm -rf ${BUILD} ${DOXYGEN_DIR}
+	rm -f config.log config.status
+	rm -f Makefile
+	echo "Cleaned."
+
+uninstall:
+	rm -r $(PY_PKG_DIR)/xkb
+	rm -r $(PREFIX)/share/doc/python-xkb
+	rm -r $(PY_PKG_DIR)/python_xkb*.egg-info

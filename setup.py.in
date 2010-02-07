@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+
+## @defgroup Setup
+# @brief The setup module, which is used to install the python-xkb library. 
+from distutils.core import setup
+from pkg_resources import require
+from pkg_resources import DistributionNotFound
+from pkg_resources import VersionConflict
+import constants
+import sys
+
+#we need python version 2.6 or greater, and typeutils library version 0.2 or greater.
+try:
+    require('python>=2.6','python-typeutils>=0.2')
+#handle not found errors and version conflicts.
+except DistributionNotFound as distr:
+    print "Failed to find required package:", distr.args[0]
+    print "Please download and install missing dependencies.\nInstall failed."
+    sys.exit(-1)
+except VersionConflict as verConfictErr:
+    print "Version conflict: Required version(s):", verConfictErr.args[1], " found version:", \
+    verConfictErr.args[0]
+    print "Please download and install the required version.\nInstall failed."
+    sys.exit(-1)
+    
+#install the python-xkb library
+setup(
+      name = 'python-xkb',
+      version = '@VERSION@',
+      description = 'Python wrappers around some Xkb functions.',
+      author = 'Siddhu Warrier',
+      author_email = 'siddhuwarrier@gmail.com',
+      url = 'http://siddhuwarrier.homelinux.org/projects/python-utils',
+      package_dir = {'xkb':'src'},#the python xkb package may be found in the src dir.
+      #data files are relative to sys prefix or install exec prefix. So by default this
+      #shoulld go into /usr/share/doc/pyxkb/
+      data_files = [
+                    ('share/doc/python-xkb/',['doxygen-docs/latex/refman.pdf', 'COPYING', 
+                                               'README', 'NEWS', 'AUTHORS'])
+                    ],
+      packages = ['xkb'] #the packages to install.
+      )
+

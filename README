@@ -1,0 +1,5 @@
+The python-xkb module is a simple Python wrapper around some of the functionality of the xkb library
+(found in Xxf86misc shared lib). Only the functionality I need at the moment is encapsulated into
+this, but this is quite amenable to future enhancement and extensions.
+
+To read more about this project, please visit http://siddhuwarrier.homelinux.org/projects/python-utils/
